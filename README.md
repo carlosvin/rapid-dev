@@ -37,6 +37,31 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
 
+## Integrating SvelteKit with MongoDB
+
+The MongoDB integration should happen on the server side only.
+
+To make sure we have a connection to the DB active we create a [`src/hooks.server.ts`](./src/hooks.server.ts) file.
+
+I have created a simple abstraction [`./src/lib/services/db.ts`](./src/lib/services/db.ts) to easily connect and access to the collections once we have established a connection to the database.
+
+### Read connection credentials from environment
+
+#### Local development
+
+You just need to make sure that the MongoDB URL and the MongoDB database name are configured in the .env.local file, make sure that you add this file to the .gitignore so that you don't push it by mistake and share your secrets.
+
+```conf
+VITE_DB_CONN='mongodb+srv://<your user name>:<password>@myfree.domain.mongodb.net'
+VITE_DB_NAME='rotationDb'
+```
+
+#### App Deployment
+
+When you deploy your application, you just need to make sure that the secrets are passed to the deployed server as environment variables.
+
+It really depends on the provider, I highly recommend using one of the [officially supported by svelte as adapters](https://kit.svelte.dev/docs/adapters), just for the shake of simplicity.
+
 ## Connecting to MongoDB (Free)
 
 You need the MongoDB connection URL and the database name.
