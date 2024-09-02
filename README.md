@@ -56,6 +56,8 @@ VITE_DB_CONN='mongodb+srv://<your user name>:<password>@myfree.domain.mongodb.ne
 VITE_DB_NAME='rotationDb'
 ```
 
+Note that we are reading this variables in the [`src/hooks.server.ts`](./src/hooks.server.ts) file.
+
 #### App Deployment
 
 When you deploy your application, you just need to make sure that the secrets are passed to the deployed server as environment variables.
@@ -83,3 +85,44 @@ You can just configure the DB access in the same section.
 
 Now it is super easy to connect, just click on the database menu entry on the left, click connect and follow the instructions.
 ![DB connect](./imgs/db-connect.png)
+
+## Fullstack development
+
+Sveltekit solution is quite straightforward:
+
+- [`+page.svelte`](./src/routes/teams/+page.svelte) files for client or frontend code.
+- [`+page.server.ts`](./src/routes/teams/+page.server.ts) files for the code meant to run on the server only.
+
+```typescript
+// this is running on the server `+page.server.ts`
+export const load: PageServerLoad = async () => {
+	// it reads the items from the database
+	const documents = await DB.teams.find<TeamDb>({}).toArray();
+
+	// it converts the documents to app objects
+	const teams = documents.map<Team>(({ name, _id }) => ({
+		name,
+		id: _id.toString()
+	}));
+
+	// this can be used later on the browser (+page.svelte)
+	return { teams };
+};
+```
+
+```svelte
+<script lang="ts">
+ // running on the browser
+ // page.svelte file
+ import type { PageData } from './$types';
+
+ export let data: PageData;
+</script>
+
+<h1>Teams list</h1>
+{#if data.teams.length === 0}
+    <p>No teams</>
+{/if}
+```
+
+This documentation is using simplified versions of the code, but you can check and run the whole example in this repository.
