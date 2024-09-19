@@ -4,7 +4,7 @@
 	export let data: PageData;
 </script>
 
-<h1>Rotation App</h1>
+<h1>List of teams</h1>
 {#if data.teams.length > 0}
 	<ul>
 		{#each data.teams as { name, id }}
@@ -13,7 +13,7 @@
 					<input type="hidden" name="id" value={id} />
 					<button formaction="?/delete" class="small danger">-</button>
 				</form>
-				<div>{name}</div>
+				<div><a href="/teams/{id}" title="Go to team {name}">{name}</a></div>
 			</li>
 		{/each}
 	</ul>
