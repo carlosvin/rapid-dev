@@ -5,7 +5,7 @@
 </script>
 
 <h1>{data.name} Details</h1>
-<form method="post" action="/save">
+<form method="post" action="?/save">
 	<input name="name" value={data.name} required placeholder="Team name" />
 	<textarea name="description" placeholder="Write something descriptive about this team"
 		>{data.description}</textarea

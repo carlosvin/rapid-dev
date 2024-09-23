@@ -21,6 +21,10 @@ export class Db {
 
 	// Connect to MongoDB DB connection URL and DB name
 	async connect(dbUrlConnection: string, dbName: string) {
+		if (this._client) {
+			console.debug('Already connected to MongoDB');
+			return;
+		}
 		this._client = await new mongoDB.MongoClient(dbUrlConnection).connect();
 		this._db = this._client.db(dbName);
 		console.info('Connected to MongoDB', this.db.databaseName);
